@@ -1,0 +1,23 @@
+
+# Ignorar todos os arquivos .txt no diretório raiz
+*.txt
+
+# Ignorar o diretório "bin" e todos os seus conteúdos
+bin/
+
+# Ignorar todos os arquivos .log em qualquer lugar do repositório
+*.log
+
+# Ignorar arquivos temporários específicos do Windows
+Thumbs.db
+Desktop.ini
+
+# outrors diretorios
+.env
+venv/
+__pycache__/
+
+
+rascunho
+/script/rascunho
+
