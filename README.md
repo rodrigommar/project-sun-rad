@@ -12,3 +12,28 @@ Recursos Principais:
 - Estrutura modular com componentes reutilizáveis
 
 Contribuições são bem-vindas! Sinta-se à vontade para colaborar, relatar problemas ou sugerir aprimoramentos para tornar o Sun-Rad uma ferramenta ainda mais robusta para análise de dados de radiação solar.
+
+
+### Estrutura das pastas
+
+projeto-sun-rad/
+|-- app.py
+|
+|-- layout/
+|   |-- __init__.py
+|   |-- layout.py
+|   |-- componentes.py
+|
+|-- callbacks/
+|   |-- __init__.py
+|   |-- callbacks.py
+|
+|-- data/
+|   |-- dados_estacoes.csv
+|   |-- estacoes_automaticas.json
+|   |-- estacoes_manuais.json
+|   |-- todas_estacoes.json
+|
+|-- notebook/
+|   |-- explorar_api.ipynb
+|
