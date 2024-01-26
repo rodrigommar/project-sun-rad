@@ -3,7 +3,6 @@ from layout.layout import create_layout
 from callbacks.callbacks import update_estacao_callback
 import dash_bootstrap_components as dbc
 
-
 # Inicialize o aplicativo Dash
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 

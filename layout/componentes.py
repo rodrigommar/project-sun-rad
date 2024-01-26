@@ -1,5 +1,7 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
+from script.connectx import states_list
+
 
 
 def create_navbar():
@@ -45,7 +47,7 @@ def create_navbar():
     return navbar
 
 
-def create_formulario_estações():
+def create_formulario_estações(lista_estados=states_list):
     
     dropdown_state = html.Div(
         [
@@ -53,13 +55,13 @@ def create_formulario_estações():
             dcc.Dropdown(
                 options=[
                     {
-                        "label": 'estado',
+                       "label": 'estado',
                         "value": 'estado'
                     }
                     #for estado in lista_estados
                 ],
                 id="estado-dropdown",
-                value='estado'
+                #value=lista_estados[0]
             
             ),
         ] #,className="mb-3"
@@ -142,3 +144,5 @@ dcc.Store(id='period-store',data=None)
 dcc.Store(id='day-store',data=None)
 
 dcc.Store(id='month-store',data=None)
+
+

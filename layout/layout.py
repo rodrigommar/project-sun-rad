@@ -1,4 +1,3 @@
-from dash import html
 from layout.componentes import create_navbar, create_formulario_estações, create_grafico, dbc
 
 def create_layout():

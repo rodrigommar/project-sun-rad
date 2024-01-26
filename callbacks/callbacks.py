@@ -1,11 +1,9 @@
 from dash.dependencies import Input, Output
-import seaborn as sns
-import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
-from script.manipula_dataframe import stations_list
 
 
+#TODO corrigir o error ModuleNotFoundError
+# from script.connectx import stations_list
+# ModuleNotFoundError: No module named 'script'
 
 def update_estacao_callback(app):
     
@@ -14,10 +12,13 @@ def update_estacao_callback(app):
         Input('estado-dropdown','value')
     )
     def update_dropdown_stations(selected_estado):
-        stations = stations_list(selected_estado)
-        return stations
+        #stations = stations_list(selected_estado)
+        #return stations
+        ...
 
 
 if __name__ == '__main__':
-    estacoes = stations_list('AM')
-    print(estacoes)
+    ...
+    #estacoes = connectx.stations_list('AM')
+    #print(estacoes)
+    #print('...')

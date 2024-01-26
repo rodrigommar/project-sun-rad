@@ -1,5 +1,4 @@
 import pandas as pd
-from script.manipula_api import ConnectAPI
 
 
 def create_df(data):
@@ -42,19 +41,13 @@ def criar_nova_lista(valor, lista=None):
 
 
 
-# Create connection with API 
-cnx = ConnectAPI()
-data_stations = cnx.get_all_stations()
-df_stations = create_df(data_stations)
-
-
 def states_list() -> list:
     lista = df_stations['SG_ESTADO'].sort_values().unique()
     return lista
 
 
-def stations_list(sg_state):
-    filter = df_stations.loc[df_stations['SG_ESTADO'] == sg_state]
+def stations_list(df, sg_state):
+    filter = df.loc[df['SG_ESTADO'] == sg_state]
     list_of_stations = filter['DC_NOME'].tolist()
     return list_of_stations
 
@@ -62,4 +55,10 @@ def stations_list(sg_state):
 
 if __name__ == '__main__':
     
+    from manipula_api import ConnectAPI
+    
+    # Create connection with API 
+    cnx = ConnectAPI()
+    data_stations = cnx.get_all_stations()
+    df_stations = create_df(data_stations)
     print(df_stations)

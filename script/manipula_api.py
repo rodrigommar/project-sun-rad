@@ -98,6 +98,7 @@ class ConnectAPI:
         
 
 if __name__ == '__main__':
+    
     connect = ConnectAPI()
     #data = connect.get_data_hour_of_all_station('2024-01-15','2024-01-15', 'A101')
     data = connect.get_data_climate_of_station('A101')
