@@ -151,12 +151,15 @@ if __name__ ==  '__main__':
     
     connection = connect_mongodb()
     
-    #dados_json = ler_dados_de_arquivo_json('/home/noah/Documentos/project-sun-rad/data_raw/estacoes_automaticas.json')
-    #verifica_se_collection_existe(connection['db-climate'], 'stations')
-    #salvar_dados_no_mongodb(dados_json, 'db-climate', 'stations', connection)
+    path = 'C:\\Users\jeje_\\OneDrive\\Área de Trabalho\\Mar\\Programação\\Python\\projeto-sun-rad\\data\\data_processed_all_stations.json'
     
-    #verifica_se_db_existe(connection, 'db-climate')
+    dados_json = ler_dados_de_arquivo_json(path)
+    
+    
+    
+    verifica_se_db_existe(connection, 'db-climate')
     #create_db(connection, 'db-climate')
     #verifica_se_collection_existe(connection['db-climate'], 'stations')
-    #create_collection(connection['db-climate'], 'stations')
+    create_collection(connection['db-climate'], 'stations')
     
+    salvar_dados_no_mongodb(dados_json, 'db-climate', 'stations', connection)
