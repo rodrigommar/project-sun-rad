@@ -41,8 +41,8 @@ def criar_nova_lista(valor, lista=None):
 
 
 
-def states_list() -> list:
-    lista = df_stations['SG_ESTADO'].sort_values().unique()
+def states_list(df) -> list:
+    lista = df['SG_ESTADO'].sort_values().unique()
     return lista
 
 
