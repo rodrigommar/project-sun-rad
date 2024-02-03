@@ -14,7 +14,8 @@ Desktop.ini
 
 # outrors diretorios
 .env
-venv/
+venv/.
+venv-airflow/
 __pycache__/
 
 

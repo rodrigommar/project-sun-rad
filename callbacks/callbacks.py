@@ -2,7 +2,7 @@ from dash.dependencies import Input, Output
 
 
 #TODO corrigir o error ModuleNotFoundError
-# from script.connectx import stations_list
+from script.connectx import lista_de_estacoes
 # ModuleNotFoundError: No module named 'script'
 
 def update_estacao_callback(app):
@@ -12,9 +12,10 @@ def update_estacao_callback(app):
         Input('estado-dropdown','value')
     )
     def update_dropdown_stations(selected_estado):
-        #stations = stations_list(selected_estado)
-        #return stations
-        ...
+        stations = lista_de_estacoes(selected_estado)
+        return stations
+
+
 
 
 if __name__ == '__main__':

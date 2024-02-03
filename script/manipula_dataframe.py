@@ -41,8 +41,8 @@ def criar_nova_lista(valor, lista=None):
 
 
 
-def states_list() -> list:
-    lista = df_stations['SG_ESTADO'].sort_values().unique()
+def states_list(df) -> list:
+    lista = df['SG_ESTADO'].sort_values().unique()
     return lista
 
 
@@ -52,6 +52,12 @@ def stations_list(df, sg_state):
     return list_of_stations
 
 
+def stations_list_test(df):
+    def define_state(sg_state):       
+        filter = df.loc[df['SG_ESTADO'] == sg_state]
+        list_of_stations = filter['DC_NOME'].tolist()
+        return list_of_stations
+    return define_state
 
 if __name__ == '__main__':
     
@@ -59,6 +65,10 @@ if __name__ == '__main__':
     
     # Create connection with API 
     cnx = ConnectAPI()
-    data_stations = cnx.get_all_stations()
-    df_stations = create_df(data_stations)
-    print(df_stations)
+    #data_stations = cnx.get_all_stations()
+    #df_stations = create_df(data_stations)
+    #print(df_stations)
+    
+    
+    
+   
