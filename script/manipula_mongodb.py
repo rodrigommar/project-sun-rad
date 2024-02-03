@@ -25,9 +25,11 @@ def connect_mongodb():
 
 
     try:
-        client = MongoClient(uri, server_api=ServerApi('1'))
+        client = MongoClient(uri, server_api=ServerApi('1'), maxPoolSize=10 ,connectTimeoutMS=30000)
         client.admin.command('ping')
         print("Pinged your deployment. You successfully connected to MongoDB!")
+        #print(f"Número de conexões abertas: {client._topology.get_server().pool.connections.count()}")
+        #print(f"Tamanho máximo do pool: {client._topology.get_server().pool.max_size}")
         return client
     
     except Exception as e:
@@ -151,15 +153,15 @@ if __name__ ==  '__main__':
     
     connection = connect_mongodb()
     
-    path = 'C:\\Users\jeje_\\OneDrive\\Área de Trabalho\\Mar\\Programação\\Python\\projeto-sun-rad\\data\\data_processed_all_stations.json'
+    path = 'C:\\Users\jeje_\\OneDrive\\Área de Trabalho\\Mar\\Programação\\Python\\projeto-sun-rad\\data\\data_raw_nordeste_january_2024.json'
     
     dados_json = ler_dados_de_arquivo_json(path)
     
     
     
     verifica_se_db_existe(connection, 'db-climate')
-    #create_db(connection, 'db-climate')
-    #verifica_se_collection_existe(connection['db-climate'], 'stations')
-    create_collection(connection['db-climate'], 'stations')
+    create_db(connection, 'db-climate')
+    verifica_se_collection_existe(connection['db-climate'], 'stations')
+    create_collection(connection['db-climate'], 'southeast_region')
     
-    salvar_dados_no_mongodb(dados_json, 'db-climate', 'stations', connection)
+    salvar_dados_no_mongodb(dados_json, 'db-climate', 'southeast_region', connection)

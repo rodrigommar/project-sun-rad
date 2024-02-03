@@ -106,7 +106,7 @@ class ConnectAPI:
       
 
 
-    def set_start_day_to_get_data(self, start_date, cod_estacao):
+    def get_data_hour_of_api(self, start_date, cod_estacao):
         
         dados_diarios = []
         
@@ -153,12 +153,11 @@ class ConnectAPI:
     
     
     # salva dados da api em um arquivo json
-    def salvar_dados_brutos_em_json(self, data, file_name):
+    def salvar_dados_brutos_de_uma_api_em_json(self, data, file_name):
         try:
             
             json_str = json.dumps(data, default=str)
             
-            #diretorio = self.obter_diretorio_data(file_name)
             diretorio = self.obter_diretorio_data()
             caminho_completo = diretorio/f'{file_name}.json'
 
@@ -185,37 +184,108 @@ class ConnectAPI:
                 writer.writerow(linha)
 
 
+    # função responsavel por transformar dados brutos do dataframe de estações
     def transfomar_dados_de_estacoes(self, df):
         
         # 1 - Exluir colunas ['SG_ENTIDADE']
         df.drop('SG_ENTIDADE', axis=1, inplace=True)
-        
+      
         # 2 - Tratar valores Nan nas colunas ['DT_FIM_OPERACAO']
         df['DT_FIM_OPERACAO'] = df['DT_FIM_OPERACAO'].fillna(0).astype('int64')
-        
-        
+           
         # 3 - Preencher os valores Nan da coluna ['FL_CAPITAL'] com o valor 'N'
         df['FL_CAPITAL'] = df['FL_CAPITAL'].fillna('N')
         
         # 4 - Formatar a coluna ['DT_INICIO_OPERACAO'] para exibir apenas a data no formato YYYY-MM-DD
         df['DT_INICIO_OPERACAO'] = df['DT_INICIO_OPERACAO'].str.split('T').str[0]
-        
+    
+  
+    
+    # função responsavel por  exlcuir duas colunas do dataframe 
+    def excluir_colunas_dados_LATITUDE_LONGITUDE_horarios(self, df):
+         # 1 - Exluir colunas ['SG_ENTIDADE']
+        df.drop(['VL_LATITUDE', 'VL_LONGITUDE'], axis=1, inplace=True)
 
-    def salvar_dados(df):
-        df.to_json('../data/data_processed_all_stations.json',orient='records')
+
+
+    # função responsável por salvar dataframe em um arquivo json
+    def salvar_dados_em_um_arquivo_json(self, df, nome_arquivo):
         
+        path = self.obter_diretorio_data()
+        
+        df.to_json(f'{path}\{nome_arquivo}.json',orient='records')
+
+      
+
+    # função que retorna o ome da região ao passar a sigla como argumento
+    def select_regiao_a_partir_do_estado(self, estado):
+        
+        mapa_regioes = {
+            'NORTE': ['AC', 'AM', 'AP', 'PA', 'RO', 'RR', 'TO'],
+            'NORDESTE': ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'],
+            'CENTRO-OESTE': ['DF', 'GO', 'MT', 'MS'],
+            'SUDESTE': ['ES', 'MG', 'RJ', 'SP'],
+            'SUL': ['PR', 'RS', 'SC']
+        }
+
+        for regiao, estados in mapa_regioes.items():
+            if estado in estados:
+                return regiao
+
+        return 'Região não encontrada'
+    
+    
+    
+    # função que adiciona nova coluna 'REGIAO' no dataframe
+    def cria_coluna_regiao_no_dataframe(self, df):
+
+        df['REGIAO'] = df['SG_ESTADO'].apply(lambda estado:  self.select_regiao_a_partir_do_estado(estado))
+
+
+
+    # função quue ler os dados de um arquivo json
+    def ler_arquivo_json(self, nome_arquivo):
+        
+        path_ = self.obter_diretorio_data()
+        full_path = f'{path_}\{nome_arquivo}.json'
+        
+        with open(full_path, 'r') as file:
+            document = json.load(file)
+            
+        return document
+
+
 
 
 if __name__ == '__main__':
+    from manipula_dataframe import create_df
     
     connect = ConnectAPI()
-    #print(connect.obter_diretorio_data())
-    start_date = '2024-01-21'
-    cod_estacao = 'A101'
-       
-    dados = connect.set_start_day_to_get_data(start_date, cod_estacao)
-    connect.salvar_dados_brutos_em_json(dados, 'dados_brutos_de_estacao_A101_mamaus')
-    print(len(dados), type(dados))
     
+    # PROCESSO: Extrai dados da API, baseado é uma data inicial e código de uma estação.
+    # --------------------------------------------------------------------------------
+    # 1 - Defini os parametros de entrada 'data_incial' e 'codigo_estacao'
+    # 2 - Obtem os dados e guarda em uma variavel dados
+    # 3 - Salva os dados em um arquivo json
+    #----------------------------------------------------------------------------------
+    #start_date = '2024-01-21'
+    #cod_estacao = 'A101'   
+    #dados = connect.set_start_day_to_get_data(start_date, cod_estacao)
+    #connect.salvar_dados_em_um_arquivo_json(dados, 'dados_brutos_de_estacao_A101_mamaus')
+    #print(len(dados), type(dados))
     
+
+
+    # PROCESSO: Adiciona coluna 'REGIAO' no arquivo referente as estações. 
+    # -------------------------------------------------------------------
+    # 1 - Ler dados de um arquivo json
+    # 2 - cria um dataframe
+    # 3 - adicinoa uma nova cluna 'REGIAO' no dataframe
+    # 4 - salva o dataframe em um arquivo json
+    # ---------------------------------------------------------
+    #dados = connect.ler_arquivo_json('data_processed_all_stations_bkp')
+    #df = create_df(dados)
+    #connect.cria_coluna_regiao_no_dataframe(df)
+    #connect.salvar_dados_em_um_arquivo_json(df, 'data_processed_all_stations')
+    #print(df.info())
 
