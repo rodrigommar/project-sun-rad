@@ -49,6 +49,7 @@ def create_navbar():
 
 def create_formulario_estações(lista_estados=lista_de_estado):
     
+    
     dropdown_state = html.Div(
         [
             dbc.Label('Estado'),
@@ -61,7 +62,6 @@ def create_formulario_estações(lista_estados=lista_de_estado):
                     for estado in lista_de_estado
                 ],
                 id="estado-dropdown",
-                value=lista_estados[0]
             
             ),
         ] #,className="mb-3"
@@ -89,8 +89,14 @@ def create_formulario_estações(lista_estados=lista_de_estado):
         [
             dbc.Label("Grandeza"),
             dcc.Dropdown(
-                options=[{"label": 'option', "value": 'option'}],# for option in list_quantity],
-                id="grandeza-dropdown",# value=list_quantity[4]
+                options={
+                    "RADIAÇÃO": 'RADIAÇÃO',
+                    "TEMPERATURA": 'TEMPERATURA',
+                    'VENTO': 'VENTO',
+                    'PRECIPETAÇÃO': 'PRECIPITAÇÃO'
+                    },
+                id="grandeza-dropdown",
+                value='Escolha a grandeza'
             ),
         ]
     )
@@ -114,27 +120,19 @@ def create_formulario_estações(lista_estados=lista_de_estado):
     btn_table = dbc.Button("Tabela", id="collapse-button", color="primary", className="ms-3", n_clicks=0)
 
     
-    formulario = dbc.Form([
-        
-        dropdown_state,
-        dropdown_station,
-        dropdown_grandeza,
-        radio_period,
-        btn_send,
-        btn_table
-        
-    ])
+    formulario = dbc.Form(
+        [       
+            dropdown_state,
+            dropdown_station,
+            dropdown_grandeza,
+            radio_period,
+            btn_send,
+            btn_table       
+        ],
+        style={'border': '1px solid #000', 'padding': '15px'}
+    )
     
     return formulario
-
-
-def create_grafico():
-    grafico = html.Div([
-        dcc.Graph(id="graph", config={"displayModeBar": False})
-    ], style={'width': '70%', 'display': 'inline-block'})
-    
-    return grafico
-
 
 
 dcc.Loading([html.Div(id='loading-demo')])

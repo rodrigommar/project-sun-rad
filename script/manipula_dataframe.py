@@ -1,5 +1,5 @@
 import pandas as pd
-
+from datetime import datetime
 
 def create_df(data):
     data =  pd.DataFrame(data)   
@@ -46,18 +46,49 @@ def states_list(df) -> list:
     return lista
 
 
-def stations_list(df, sg_state):
-    filter = df.loc[df['SG_ESTADO'] == sg_state]
-    list_of_stations = filter['DC_NOME'].tolist()
-    return list_of_stations
 
 
-def stations_list_test(df):
+def stations_list(df):
     def define_state(sg_state):       
         filter = df.loc[df['SG_ESTADO'] == sg_state]
         list_of_stations = filter['DC_NOME'].tolist()
         return list_of_stations
     return define_state
+
+
+
+def obtem_codigo_da_estacao(df):
+    
+    def codigo_estacao(dc_nome):
+        filter = df[df['DC_NOME'] == dc_nome]
+        if not filter.empty:
+            codigo = filter['CD_ESTACAO'].iloc[0]
+            print(codigo)
+            return codigo
+        else:
+            return None
+    
+    return codigo_estacao
+
+
+def data_de_hoje_str():
+    data_hora_atual = datetime.now()
+    data_de_hoje = data_hora_atual.date()
+    convert_data_de_hoje_str = data_de_hoje.strftime('%Y-%m-%d')
+    return convert_data_de_hoje_str
+
+
+
+def update_df(df):
+    def retorna_coluna_radicao(sigla_estado, estacao):
+        dia = data_de_hoje_str()
+        df_estado = df[df['UF'] == sigla_estado]
+        df_cidade = df_estado[df_estado['CD_ESTACAO'] == estacao]
+        grandeza = df_cidade['RAD_GLO'] [df_cidade['DT_MEDICAO'] == dia]
+        return grandeza
+    return retorna_coluna_radicao
+
+
 
 if __name__ == '__main__':
     
@@ -65,9 +96,11 @@ if __name__ == '__main__':
     
     # Create connection with API 
     cnx = ConnectAPI()
-    #data_stations = cnx.get_all_stations()
-    #df_stations = create_df(data_stations)
-    #print(df_stations)
+    data_stations = cnx.get_all_stations()
+    df_stations = create_df(data_stations)
+    obtem_codigo = obtem_codigo_da_estacao(df_stations)
+    codigo = obtem_codigo('MANAUS')
+    print(codigo)
     
     
     

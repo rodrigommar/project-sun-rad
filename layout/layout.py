@@ -1,4 +1,4 @@
-from layout.componentes import create_navbar, create_formulario_estações, create_grafico, dbc
+from layout.componentes import dcc, create_navbar, create_formulario_estações, dbc
 
 def create_layout():
     
@@ -21,12 +21,14 @@ def create_layout():
                     
                     dbc.Col(
                         [
-                            create_grafico()
+                            dcc.Graph(id="graph")                  
+   
                         ],sm=9
                     )
                 ]    
             ),      
         ], fluid=True
     )
+
 
     return layout

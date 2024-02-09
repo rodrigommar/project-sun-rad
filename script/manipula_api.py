@@ -32,6 +32,15 @@ class ConnectAPI:
         return f'{token1}={token2}'
         
 
+    # Obter os dados de uma url
+    def get_data(self, url):
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            data_url = response.json()
+            
+        return data_url
+    
 
     # obtem dados horarios baseados nos parametros
     def get_data_hour_of_station(self, data_inicial, data_final, station):
@@ -42,17 +51,33 @@ class ConnectAPI:
         data = self.get_data(url) 
         
         return data
-
-
+    
+    
+    def obtem_dados_de_hoje(self):
         
-    # Obter os dados de uma url
-    def get_data(self, url):
-        response = requests.get(url)
+        data_hora_atual = datetime.now()
+        data_de_hoje = data_hora_atual.date()
+        date = data_de_hoje.strftime('%Y-%m-%d')
         
-        if response.status_code == 200:
-            data = response.json()
+        def get_station(station):
             
-        return data
+            url = f'{self.url_base}/token/estacao/{date}/{date}/{station}/{self.token}'
+            print(url)
+            
+            #data = self.get_data(url)
+            
+            response = requests.get(url)
+        
+            if response.status_code == 200:
+                data = response.json()
+                return data
+            
+
+        
+        return get_station
+
+
+        
 
 
     #  retorna dados de um tipo de estacão 
